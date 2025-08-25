@@ -16,7 +16,6 @@ public class Chaser : Enemy
         p_Health = p_MaxHealth;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Vector2.Distance(transform.position, m_Player.transform.position) > p_MinPlayerDistance)
@@ -29,20 +28,17 @@ public class Chaser : Enemy
         }
     }
 
-    void Chase()
+    protected override void Chase()
     {
-        if (p_State == EnemyState.Chase) return;
+        base.Chase();
 
-        p_State = EnemyState.Chase;
         Move((m_Player.transform.position - transform.position).normalized);
     }
-    void Attack()
+    protected override void Attack()
     {
-        if (p_State == EnemyState.Attack) return;
+        base.Attack();
 
-        p_State = EnemyState.Attack;
         Move(Vector2.zero);
-
         StartCoroutine(AttackFrequency());
     }
     IEnumerator AttackFrequency()

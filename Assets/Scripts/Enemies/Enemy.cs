@@ -24,6 +24,12 @@ public class Enemy : Character
         p_State = EnemyState.Attack;
         m_StateUpdate = AttackUpdate;
     }
+    protected virtual void Die()
+    {
+        if (p_State == EnemyState.Die) return;
+
+    }
+
     protected virtual void ChaseUpdate(float deltaTime)
     {
 

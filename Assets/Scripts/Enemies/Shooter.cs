@@ -45,20 +45,7 @@ public class Shooter : Enemy
 
         Move(Vector2.zero);
 
-        Vector3 dir = m_Player.transform.position - transform.position;
-
-        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        m_GunPivot.localRotation = Quaternion.AngleAxis(angle, Vector3.forward);
-
         StartCoroutine(AttackFrequency());
-    }
-    void AttackUpdate(float deltatime)
-    {
-
-    }
-    void ChaseUpdate(float deltatime)
-    {
-
     }
     IEnumerator AttackFrequency()
     {
@@ -71,7 +58,17 @@ public class Shooter : Enemy
     }
     void Shoot()
     {
+	Vector3 dir = m_Player.transform.position - transform.position;
+
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        m_GunPivot.localRotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
         GameObject bullet = Instantiate(m_BulletPrefab, m_FirePoint.position, m_FirePoint.rotation);
         bullet.GetComponent<Bullet>().FireBullet(gameObject.tag);
+    }
+    protected override void Die()
+    {
+        p_State = EnemyState.Die;
+        base.Die();
     }
 }
