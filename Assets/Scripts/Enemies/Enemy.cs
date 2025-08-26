@@ -21,6 +21,7 @@ public abstract class Enemy : Character
         p_State = EnemyState.Attack;
         m_StateUpdate = AttackUpdate;
     }
+    public abstract void OnSpawned(Player player);
     protected override void Die()
     {
         base.Die();

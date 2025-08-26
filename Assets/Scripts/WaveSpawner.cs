@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class WaveSpawner : MonoBehaviour
 {
-    [SerializeField] Wave[] m_Waves;
+    [SerializeField] Player m_Player;
     [SerializeField] float m_WaveDelay;
+    [SerializeField] Wave[] m_Waves;
     [SerializeField] GameObject[] m_Enemies;
     [SerializeField] Transform[] m_SpawnPoints;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        StartCoroutine(StartWave());
+        //StartCoroutine(StartWave());
     }
 
     // Update is called once per frame
@@ -29,7 +30,8 @@ public class WaveSpawner : MonoBehaviour
             int enemyCount = wave.enemies.Length;
             for (int j = 0; j < enemyCount; j++)
             {
-                Instantiate(m_Enemies[(int) wave.enemies[j].enemyType], m_SpawnPoints[wave.enemies[j].spawnIdx].position, Quaternion.identity);
+                GameObject enemy = Instantiate(m_Enemies[(int) wave.enemies[j].enemyType], m_SpawnPoints[wave.enemies[j].spawnIdx].position, Quaternion.identity);
+                enemy.GetComponent<Enemy>().OnSpawned(m_Player);
 
                 yield return new WaitForSeconds(wave.timeInterval);
             }

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,6 +11,12 @@ public class Player : Character
     [SerializeField] GameObject m_BulletPrefab;
 
     InputSystem_Actions m_InputActions;
+    public delegate void InteractDelegate();
+    public InteractDelegate interact;
+
+    bool m_IsRecording = false;
+    List<RecordFrame> m_RecordedEcho = new();
+    [SerializeField] float m_FirstEchoRecordTime;
 
     private void Awake()
     {
@@ -17,6 +25,7 @@ public class Player : Character
         m_InputActions.Player.Enable();
 
         m_InputActions.Player.Shoot.performed += Shoot;
+        m_InputActions.Player.Record.performed += Record;
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -29,6 +38,16 @@ public class Player : Character
     {
         Move(m_InputActions.Player.Move.ReadValue<Vector2>());
         PointArmToMouse();
+        if (m_IsRecording)
+        {
+            RecordFrame frame = new(
+                new Vector2(transform.position.x, transform.position.y), 
+                m_GunPivot.localRotation.z, 
+                m_InputActions.Player.Shoot.triggered
+                );
+            
+            m_RecordedEcho.Add(frame);
+        }
     }
     void PointArmToMouse()
     {
@@ -43,7 +62,20 @@ public class Player : Character
         GameObject bullet = Instantiate(m_BulletPrefab, m_FirePoint.position, m_FirePoint.rotation);
         bullet.GetComponent<Bullet>().FireBullet(gameObject.tag);
     }
+    void Record(InputAction.CallbackContext context)
+    {
+        if (m_IsRecording) return;
 
+        m_IsRecording = true;
+        m_RecordedEcho.Clear();
+        StartCoroutine(SetRecordingFalse());
+    }
+    IEnumerator SetRecordingFalse()
+    {
+        yield return new WaitForSeconds(m_FirstEchoRecordTime);
+
+        m_IsRecording = false;
+    }
     public override void TakeDamage(float damage)
     {
         p_Health -= damage;

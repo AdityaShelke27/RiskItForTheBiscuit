@@ -3,18 +3,11 @@ using UnityEngine;
 
 public class Chaser : Enemy
 {
-    GameObject m_Player;
-    Character m_PlayerCharacter;
+    Player m_Player;
     Coroutine m_AttackCoroutine;
     private void Awake()
     {
         p_Rigidbody = GetComponent<Rigidbody2D>();
-    }
-    void Start()
-    {
-        m_Player = GameObject.Find("Player");
-
-        p_Health = p_MaxHealth;
     }
 
     void Update()
@@ -41,6 +34,12 @@ public class Chaser : Enemy
 
         m_StateUpdate?.Invoke(Time.deltaTime);
     }
+    public override void OnSpawned(Player player)
+    {
+        m_Player = player;
+
+        p_Health = p_MaxHealth;
+    }
     protected override void ChaseUpdate(float deltaTime)
     {
         base.ChaseUpdate(deltaTime);
@@ -62,7 +61,7 @@ public class Chaser : Enemy
     {
         while(p_State == EnemyState.Attack)
         {
-            m_PlayerCharacter.TakeDamage(p_Damage);
+            m_Player.TakeDamage(p_Damage);
 
             yield return new WaitForSeconds(p_AttackFrequency);
         }
@@ -107,4 +106,6 @@ public class Chaser : Enemy
             Die();
         }
     }
+
+    
 }

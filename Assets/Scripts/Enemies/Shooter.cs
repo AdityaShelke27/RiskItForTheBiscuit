@@ -6,17 +6,11 @@ public class Shooter : Enemy
     [SerializeField] GameObject m_BulletPrefab;
     [SerializeField] Transform m_FirePoint;
     [SerializeField] Transform m_GunPivot;
-    GameObject m_Player;
+    Player m_Player;
     Coroutine m_AttackCoroutine;
     private void Awake()
     {
         p_Rigidbody = GetComponent<Rigidbody2D>();
-    }
-    void Start()
-    {
-        m_Player = GameObject.Find("Player");
-
-        p_Health = p_MaxHealth;
     }
     void Update()
     {
@@ -41,6 +35,12 @@ public class Shooter : Enemy
         }
 
         m_StateUpdate?.Invoke(Time.deltaTime);
+    }
+    public override void OnSpawned(Player player)
+    {
+        m_Player = player;
+
+        p_Health = p_MaxHealth;
     }
     protected override void ChaseUpdate(float deltaTime)
     {

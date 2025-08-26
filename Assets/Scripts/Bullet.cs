@@ -20,8 +20,8 @@ public class Bullet : MonoBehaviour
         if(!collision.collider.CompareTag(m_OwnerTag) && collision.collider.TryGetComponent(out Character character))
         {
             character.TakeDamage(m_Damage);
-            DestroyBullet();
         }
+        DestroyBullet();
     }
     public void FireBullet(string OwnerTag)
     {
