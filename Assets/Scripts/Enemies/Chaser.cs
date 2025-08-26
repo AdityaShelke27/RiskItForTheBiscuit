@@ -5,6 +5,7 @@ public class Chaser : Enemy
 {
     GameObject m_Player;
     Character m_PlayerCharacter;
+    Coroutine m_AttackCoroutine;
     private void Awake()
     {
         p_Rigidbody = GetComponent<Rigidbody2D>();
@@ -18,28 +19,44 @@ public class Chaser : Enemy
 
     void Update()
     {
-        if (Vector2.Distance(transform.position, m_Player.transform.position) > p_MinPlayerDistance)
+        float distance = Vector2.Distance(transform.position, m_Player.transform.position);
+        if (p_State == EnemyState.Attack)
         {
-            Chase();
+            if (distance > p_ChaseRange)
+            {
+                SwitchState(EnemyState.Chase);
+            }
         }
-        else
+        else // If currently chasing or idle
         {
-            Attack();
+            if (distance <= p_AttackRange)
+            {
+                SwitchState(EnemyState.Attack);
+            }
+            else
+            {
+                SwitchState(EnemyState.Chase);
+            }
         }
-    }
 
+        m_StateUpdate?.Invoke(Time.deltaTime);
+    }
+    protected override void ChaseUpdate(float deltaTime)
+    {
+        base.ChaseUpdate(deltaTime);
+        
+        Move((m_Player.transform.position - transform.position).normalized);
+    }
     protected override void Chase()
     {
         base.Chase();
-
-        Move((m_Player.transform.position - transform.position).normalized);
     }
     protected override void Attack()
     {
         base.Attack();
 
         Move(Vector2.zero);
-        StartCoroutine(AttackFrequency());
+        m_AttackCoroutine = StartCoroutine(AttackFrequency());
     }
     IEnumerator AttackFrequency()
     {
@@ -55,5 +72,39 @@ public class Chaser : Enemy
     {
         p_State = EnemyState.Die;
         base.Die();
+    }
+    void SwitchState(EnemyState state)
+    {
+        if (p_State == state) return;
+
+        if (p_State == EnemyState.Attack)
+        {
+            StopCoroutine(m_AttackCoroutine);
+        }
+
+        switch (state)
+        {
+            case EnemyState.None:
+                break;
+            case EnemyState.Chase:
+                Chase();
+                break;
+            case EnemyState.Attack:
+                Attack();
+                break;
+            case EnemyState.Die:
+                Die();
+                break;
+        }
+    }
+
+    public override void TakeDamage(float damage)
+    {
+        p_Health -= damage;
+
+        if (p_Health <= 0)
+        {
+            Die();
+        }
     }
 }

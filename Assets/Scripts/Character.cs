@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Character : MonoBehaviour
+public abstract class Character : MonoBehaviour
 {
     [SerializeField] protected float p_MaxHealth;
     [SerializeField] protected float p_Speed;
@@ -10,15 +10,7 @@ public class Character : MonoBehaviour
     {
         p_Rigidbody.linearVelocity = dir * p_Speed;
     }
-    public void TakeDamage(float damage)
-    {
-        p_Health -= damage;
-
-        if (p_Health <= 0)
-        {
-            Die();
-        }
-    }
+    public abstract void TakeDamage(float damage);
     protected virtual void Die()
     {
         Destroy(gameObject);

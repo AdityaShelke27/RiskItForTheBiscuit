@@ -43,4 +43,14 @@ public class Player : Character
         GameObject bullet = Instantiate(m_BulletPrefab, m_FirePoint.position, m_FirePoint.rotation);
         bullet.GetComponent<Bullet>().FireBullet(gameObject.tag);
     }
+
+    public override void TakeDamage(float damage)
+    {
+        p_Health -= damage;
+
+        if (p_Health <= 0)
+        {
+            Die();
+        }
+    }
 }

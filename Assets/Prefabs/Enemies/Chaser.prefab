@@ -297,7 +297,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   p_MaxHealth: 5
   p_Speed: 5
-  p_MinPlayerDistance: 1
+  p_AttackRange: 1
+  p_ChaseRange: 1.5
+  p_Damage: 1
+  p_AttackFrequency: 1
 --- !u!1 &2540625320087018070
 GameObject:
   m_ObjectHideFlags: 0
