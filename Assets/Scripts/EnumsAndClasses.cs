@@ -15,14 +15,16 @@ public enum EnemyType
 public class RecordFrame
 {
     public Vector2 pos;
-    public float armAngle;
+    public short armAngle;
     public bool didShoot;
+    public bool isRight;
 
-    public RecordFrame(Vector2 _pos, float _armAngle, bool _didShoot)
+    public RecordFrame(Vector2 _pos, short _armAngle, bool _didShoot, bool _isRight)
     {
         pos = _pos;
         armAngle = _armAngle;
         didShoot = _didShoot;
+        isRight = _isRight;
     }
 }
 [Serializable]

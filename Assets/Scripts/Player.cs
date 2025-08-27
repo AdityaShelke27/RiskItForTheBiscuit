@@ -9,14 +9,20 @@ public class Player : Character
     [SerializeField] Transform m_FirePoint;
     [SerializeField] Camera m_Camera;
     [SerializeField] GameObject m_BulletPrefab;
+    [SerializeField] GameObject m_EchoPrefab;
 
     InputSystem_Actions m_InputActions;
     public delegate void InteractDelegate();
     public InteractDelegate interact;
 
     bool m_IsRecording = false;
+    bool m_IsEchoReady = false;
+    int m_EchosDeployed = 0;
+    [SerializeField] Transform m_PlayerBody;
+    [SerializeField] int m_MaxDeployableEchos;
     List<RecordFrame> m_RecordedEcho = new();
     [SerializeField] float m_FirstEchoRecordTime;
+    bool isRight = true;
 
     private void Awake()
     {
@@ -26,6 +32,7 @@ public class Player : Character
 
         m_InputActions.Player.Shoot.performed += Shoot;
         m_InputActions.Player.Record.performed += Record;
+        m_InputActions.Player.Interact.performed += Interact;
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -37,17 +44,47 @@ public class Player : Character
     void Update()
     {
         Move(m_InputActions.Player.Move.ReadValue<Vector2>());
+        PlayerFlipCorrection();
         PointArmToMouse();
         if (m_IsRecording)
         {
             RecordFrame frame = new(
                 new Vector2(transform.position.x, transform.position.y), 
-                m_GunPivot.localRotation.z, 
-                m_InputActions.Player.Shoot.triggered
+                (short) m_GunPivot.localRotation.eulerAngles.z, 
+                m_InputActions.Player.Shoot.triggered,
+                isRight
                 );
             
             m_RecordedEcho.Add(frame);
         }
+    }
+    void PlayerFlipCorrection()
+    {
+        if (p_Rigidbody.linearVelocityX > 0.1f)
+        {
+            isRight = true;
+        }
+        else if (p_Rigidbody.linearVelocityX < -0.1f)
+        {
+            isRight = false;
+        }
+
+        m_PlayerBody.localScale = new Vector3(isRight ? 1 : -1, m_PlayerBody.localScale.y, m_PlayerBody.localScale.z);
+        //m_GunPivot.localScale = new Vector3(isRight ? 1 : -1, m_GunPivot.localScale.y, m_GunPivot.localScale.z);
+    }
+    void Interact(InputAction.CallbackContext context)
+    {
+        if(m_IsEchoReady)
+        {
+            DeployEcho();
+            m_EchosDeployed++;
+            m_IsEchoReady = false;
+        }
+    }
+    void DeployEcho()
+    {
+        GameObject echo = Instantiate(m_EchoPrefab, Vector3.zero, Quaternion.identity);
+        echo.GetComponent<Echo>().OnSpawned(m_RecordedEcho, p_MaxHealth, p_Speed);
     }
     void PointArmToMouse()
     {
@@ -66,6 +103,13 @@ public class Player : Character
     {
         if (m_IsRecording) return;
 
+        if(m_EchosDeployed >= m_MaxDeployableEchos)
+        {
+            Debug.Log("Cannot Deploy more echos");
+            return;
+        }
+
+        Debug.Log("Recording Started");
         m_IsRecording = true;
         m_RecordedEcho.Clear();
         StartCoroutine(SetRecordingFalse());
@@ -73,8 +117,9 @@ public class Player : Character
     IEnumerator SetRecordingFalse()
     {
         yield return new WaitForSeconds(m_FirstEchoRecordTime);
-
+        Debug.Log("Recording Complete");
         m_IsRecording = false;
+        m_IsEchoReady = true;
     }
     public override void TakeDamage(float damage)
     {

@@ -15,9 +15,11 @@ public class Bullet : MonoBehaviour
     {
         Destroy(gameObject);
     }
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(!collision.collider.CompareTag(m_OwnerTag) && collision.collider.TryGetComponent(out Character character))
+        if (collision.CompareTag(m_OwnerTag)) return;
+
+        if(collision.TryGetComponent(out Character character))
         {
             character.TakeDamage(m_Damage);
         }
