@@ -9,6 +9,7 @@ public abstract class Enemy : Character
     [SerializeField] protected float p_Damage;
     [SerializeField] protected float p_AttackFrequency;
     [SerializeField] protected Slider p_HealthSlider;
+    protected Character p_Target;
     protected EnemyState p_State;
     protected delegate void StateUpdate(float deltaTime);
     protected StateUpdate m_StateUpdate;
@@ -23,7 +24,7 @@ public abstract class Enemy : Character
         p_State = EnemyState.Attack;
         m_StateUpdate = AttackUpdate;
     }
-    public abstract void OnSpawned(Player player);
+    public abstract void OnSpawned();
     protected override void Die()
     {
         base.Die();
@@ -36,5 +37,23 @@ public abstract class Enemy : Character
     protected virtual void AttackUpdate(float deltaTime)
     {
 
+    }
+    protected virtual void FindNewTarget()
+    {
+        GameObject[] targets = GameObject.FindGameObjectsWithTag("Player");
+
+        GameObject minDistanceTarget = targets[0];
+        float minDistance = float.MaxValue;
+        foreach (GameObject target in targets)
+        {
+            float dist = Vector2.Distance(transform.position, target.transform.position);
+            if (dist < minDistance)
+            {
+                minDistance = dist;
+                minDistanceTarget = target;
+            }
+        }
+
+        p_Target = minDistanceTarget.GetComponent<Character>();
     }
 }

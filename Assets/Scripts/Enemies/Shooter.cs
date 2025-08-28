@@ -6,7 +6,6 @@ public class Shooter : Enemy
     [SerializeField] GameObject m_BulletPrefab;
     [SerializeField] Transform m_FirePoint;
     [SerializeField] Transform m_GunPivot;
-    Player m_Player;
     Coroutine m_AttackCoroutine;
     private void Awake()
     {
@@ -14,7 +13,13 @@ public class Shooter : Enemy
     }
     void Update()
     {
-        float distance = Vector2.Distance(transform.position, m_Player.transform.position);
+        if (p_Target == null)
+        {
+            FindNewTarget();
+            if (p_Target == null) return;
+        }
+
+        float distance = Vector2.Distance(transform.position, p_Target.transform.position);
         if (p_State == EnemyState.Attack)
         {
             if (distance > p_ChaseRange)
@@ -36,10 +41,8 @@ public class Shooter : Enemy
 
         m_StateUpdate?.Invoke(Time.deltaTime);
     }
-    public override void OnSpawned(Player player)
+    public override void OnSpawned()
     {
-        m_Player = player;
-
         p_Health = p_MaxHealth;
         p_HealthSlider.maxValue = p_MaxHealth;
         p_HealthSlider.value = p_Health;
@@ -48,7 +51,7 @@ public class Shooter : Enemy
     {
         base.ChaseUpdate(deltaTime);
 
-        Move((m_Player.transform.position - transform.position).normalized);
+        Move((p_Target.transform.position - transform.position).normalized);
     }
     protected override void Chase()
     {
@@ -82,7 +85,7 @@ public class Shooter : Enemy
     }
     void Shoot()
     {
-	    Vector3 dir = m_Player.transform.position - transform.position;
+	    Vector3 dir = p_Target.transform.position - transform.position;
 
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         m_GunPivot.localRotation = Quaternion.AngleAxis(angle, Vector3.forward);

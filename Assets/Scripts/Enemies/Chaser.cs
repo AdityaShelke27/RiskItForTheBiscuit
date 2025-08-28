@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class Chaser : Enemy
 {
-    Player m_Player;
     Coroutine m_AttackCoroutine;
     private void Awake()
     {
@@ -12,7 +11,13 @@ public class Chaser : Enemy
 
     void Update()
     {
-        float distance = Vector2.Distance(transform.position, m_Player.transform.position);
+        if(p_Target == null)
+        {
+            FindNewTarget();
+            if(p_Target == null) return;
+        }
+
+        float distance = Vector2.Distance(transform.position, p_Target.transform.position);
         if (p_State == EnemyState.Attack)
         {
             if (distance > p_ChaseRange)
@@ -34,10 +39,8 @@ public class Chaser : Enemy
 
         m_StateUpdate?.Invoke(Time.deltaTime);
     }
-    public override void OnSpawned(Player player)
+    public override void OnSpawned()
     {
-        m_Player = player;
-
         p_Health = p_MaxHealth;
         p_HealthSlider.maxValue = p_MaxHealth;
         p_HealthSlider.value = p_Health;
@@ -46,7 +49,7 @@ public class Chaser : Enemy
     {
         base.ChaseUpdate(deltaTime);
         
-        Move((m_Player.transform.position - transform.position).normalized);
+        Move((p_Target.transform.position - transform.position).normalized);
     }
     protected override void Chase()
     {
@@ -63,7 +66,7 @@ public class Chaser : Enemy
     {
         while(p_State == EnemyState.Attack)
         {
-            m_Player.TakeDamage(p_Damage);
+            p_Target.TakeDamage(p_Damage);
 
             yield return new WaitForSeconds(p_AttackFrequency);
         }
@@ -109,6 +112,4 @@ public class Chaser : Enemy
             Die();
         }
     }
-
-    
 }

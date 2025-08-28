@@ -90,7 +90,7 @@ public class Player : Character
     {
         GameObject echo = Instantiate(m_EchoPrefab, Vector3.zero, Quaternion.identity);
         echo.GetComponent<Echo>().OnSpawned(m_RecordedEcho, p_Health / 2, p_Speed);
-        p_Health /= 2;
+        TakeDamage(p_Health / 2);
     }
     void PointArmToMouse()
     {
@@ -107,6 +107,7 @@ public class Player : Character
     }
     void Record(InputAction.CallbackContext context)
     {
+        if (!ExtractionArea.GetIsMachineActive()) return;
         if (m_IsRecording) return;
 
         ExtractionArea.DeactivateMachine();

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class WaveSpawner : MonoBehaviour
 {
-    [SerializeField] Player m_Player;
     [SerializeField] float m_WaveDelay;
     [SerializeField] Wave[] m_Waves;
     [SerializeField] GameObject[] m_Enemies;
@@ -31,7 +30,7 @@ public class WaveSpawner : MonoBehaviour
             for (int j = 0; j < enemyCount; j++)
             {
                 GameObject enemy = Instantiate(m_Enemies[(int) wave.enemies[j].enemyType], m_SpawnPoints[wave.enemies[j].spawnIdx].position, Quaternion.identity);
-                enemy.GetComponent<Enemy>().OnSpawned(m_Player);
+                enemy.GetComponent<Enemy>().OnSpawned();
 
                 yield return new WaitForSeconds(wave.timeInterval);
             }

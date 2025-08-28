@@ -4,7 +4,7 @@ public abstract class Character : MonoBehaviour
 {
     [SerializeField] protected float p_MaxHealth;
     [SerializeField] protected float p_Speed;
-    protected float p_Health;
+    [SerializeField] protected float p_Health;
     protected Rigidbody2D p_Rigidbody;
     
     protected void Move(Vector2 dir)

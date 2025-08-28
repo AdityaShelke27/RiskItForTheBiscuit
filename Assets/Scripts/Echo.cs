@@ -32,6 +32,7 @@ public class Echo : Character
     public override void TakeDamage(float damage)
     {
         p_Health -= damage;
+        m_HealthSlider.value = p_Health;
 
         if (p_Health <= 0)
         {
