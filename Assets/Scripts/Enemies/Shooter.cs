@@ -41,6 +41,8 @@ public class Shooter : Enemy
         m_Player = player;
 
         p_Health = p_MaxHealth;
+        p_HealthSlider.maxValue = p_MaxHealth;
+        p_HealthSlider.value = p_Health;
     }
     protected override void ChaseUpdate(float deltaTime)
     {
@@ -55,6 +57,7 @@ public class Shooter : Enemy
     public override void TakeDamage(float damage)
     {
         p_Health -= damage;
+        p_HealthSlider.value = p_Health;
 
         if (p_Health <= 0)
         {

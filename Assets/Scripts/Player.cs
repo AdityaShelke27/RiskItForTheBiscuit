@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class Player : Character
 {
@@ -10,13 +11,13 @@ public class Player : Character
     [SerializeField] Camera m_Camera;
     [SerializeField] GameObject m_BulletPrefab;
     [SerializeField] GameObject m_EchoPrefab;
+    [SerializeField] Slider m_HealthSlider;
 
     InputSystem_Actions m_InputActions;
     public delegate void InteractDelegate();
     public InteractDelegate interact;
 
     bool m_IsRecording = false;
-    bool m_IsEchoReady = false;
     int m_EchosDeployed = 0;
     [SerializeField] Transform m_PlayerBody;
     [SerializeField] int m_MaxDeployableEchos;
@@ -34,13 +35,13 @@ public class Player : Character
         m_InputActions.Player.Record.performed += Record;
         m_InputActions.Player.Interact.performed += Interact;
     }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         p_Health = p_MaxHealth;
+        m_HealthSlider.maxValue = p_MaxHealth;
+        m_HealthSlider.value = p_Health;
     }
 
-    // Update is called once per frame
     void Update()
     {
         Move(m_InputActions.Player.Move.ReadValue<Vector2>());
@@ -74,17 +75,22 @@ public class Player : Character
     }
     void Interact(InputAction.CallbackContext context)
     {
-        if(m_IsEchoReady)
+        if(ExtractionArea.GetIsInteractable())
+        {
+            ExtractionArea.ActivateMachine();
+        }
+        /*if(m_IsEchoReady)
         {
             DeployEcho();
             m_EchosDeployed++;
             m_IsEchoReady = false;
-        }
+        }*/
     }
     void DeployEcho()
     {
         GameObject echo = Instantiate(m_EchoPrefab, Vector3.zero, Quaternion.identity);
-        echo.GetComponent<Echo>().OnSpawned(m_RecordedEcho, p_MaxHealth, p_Speed);
+        echo.GetComponent<Echo>().OnSpawned(m_RecordedEcho, p_Health / 2, p_Speed);
+        p_Health /= 2;
     }
     void PointArmToMouse()
     {
@@ -103,6 +109,7 @@ public class Player : Character
     {
         if (m_IsRecording) return;
 
+        ExtractionArea.DeactivateMachine();
         if(m_EchosDeployed >= m_MaxDeployableEchos)
         {
             Debug.Log("Cannot Deploy more echos");
@@ -119,12 +126,14 @@ public class Player : Character
         yield return new WaitForSeconds(m_FirstEchoRecordTime);
         Debug.Log("Recording Complete");
         m_IsRecording = false;
-        m_IsEchoReady = true;
+
+        DeployEcho();
+        m_EchosDeployed++;
     }
     public override void TakeDamage(float damage)
     {
         p_Health -= damage;
-
+        m_HealthSlider.value = p_Health;
         if (p_Health <= 0)
         {
             Die();

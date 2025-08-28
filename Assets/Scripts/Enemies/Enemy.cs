@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public abstract class Enemy : Character
 {
@@ -7,6 +8,7 @@ public abstract class Enemy : Character
     [SerializeField] protected float p_ChaseRange;
     [SerializeField] protected float p_Damage;
     [SerializeField] protected float p_AttackFrequency;
+    [SerializeField] protected Slider p_HealthSlider;
     protected EnemyState p_State;
     protected delegate void StateUpdate(float deltaTime);
     protected StateUpdate m_StateUpdate;
