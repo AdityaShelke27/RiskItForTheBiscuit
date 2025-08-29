@@ -6,6 +6,7 @@ public class Shooter : Enemy
     [SerializeField] GameObject m_BulletPrefab;
     [SerializeField] Transform m_FirePoint;
     [SerializeField] Transform m_GunPivot;
+    Vector3 m_OriginalBodyScale;
     Coroutine m_AttackCoroutine;
     private void Awake()
     {
@@ -13,6 +14,8 @@ public class Shooter : Enemy
     }
     void Update()
     {
+        if (!p_IsAlive) return;
+
         if (p_Target == null)
         {
             FindNewTarget();
@@ -20,6 +23,7 @@ public class Shooter : Enemy
         }
 
         float distance = Vector2.Distance(transform.position, p_Target.transform.position);
+        p_Body.localScale = new(transform.position.x < p_Target.transform.position.x ? -m_OriginalBodyScale.x : m_OriginalBodyScale.x, m_OriginalBodyScale.y, m_OriginalBodyScale.z);
         if (p_State == EnemyState.Attack)
         {
             if (distance > p_ChaseRange)
@@ -43,6 +47,9 @@ public class Shooter : Enemy
     }
     public override void OnSpawned()
     {
+        p_Collider = GetComponent<BoxCollider2D>();
+        p_Body = p_Animator.transform;
+        m_OriginalBodyScale = p_Body.localScale;
         p_Health = p_MaxHealth;
         p_HealthSlider.maxValue = p_MaxHealth;
         p_HealthSlider.value = p_Health;
@@ -61,10 +68,10 @@ public class Shooter : Enemy
     {
         p_Health -= damage;
         p_HealthSlider.value = p_Health;
-
+        p_Animator.SetTrigger("Damage");
         if (p_Health <= 0)
         {
-            Die();
+            SwitchState(EnemyState.Die);
         }
     }
     protected override void Attack()
@@ -79,7 +86,7 @@ public class Shooter : Enemy
         while (p_State == EnemyState.Attack)
         {
             Shoot();
-            
+            p_Animator.SetTrigger("Attack");
             yield return new WaitForSeconds(p_AttackFrequency);
         }
     }
@@ -96,6 +103,8 @@ public class Shooter : Enemy
     protected override void Die()
     {
         p_State = EnemyState.Die;
+        p_Rigidbody.linearVelocity = Vector2.zero;
+        p_Collider.enabled = false;
         base.Die();
     }
 
@@ -113,12 +122,16 @@ public class Shooter : Enemy
             case EnemyState.None:
                 break;
             case EnemyState.Chase:
+                p_Animator.SetBool("IsMoving", true);
                 Chase();
                 break;
             case EnemyState.Attack:
+                p_Animator.SetBool("IsMoving", false);
                 Attack();
                 break;
             case EnemyState.Die:
+                p_Animator.SetBool("IsMoving", false);
+                p_Animator.SetTrigger("Dead");
                 Die();
                 break;
         }

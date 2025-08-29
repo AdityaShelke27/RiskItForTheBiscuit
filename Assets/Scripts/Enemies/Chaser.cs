@@ -4,6 +4,7 @@ using UnityEngine;
 public class Chaser : Enemy
 {
     Coroutine m_AttackCoroutine;
+    Vector3 m_OriginalBodyScale;
     private void Awake()
     {
         p_Rigidbody = GetComponent<Rigidbody2D>();
@@ -11,6 +12,8 @@ public class Chaser : Enemy
 
     void Update()
     {
+        if (!p_IsAlive) return;
+
         if(p_Target == null)
         {
             FindNewTarget();
@@ -18,6 +21,7 @@ public class Chaser : Enemy
         }
 
         float distance = Vector2.Distance(transform.position, p_Target.transform.position);
+        p_Body.localScale = new(transform.position.x < p_Target.transform.position.x ? -m_OriginalBodyScale.x : m_OriginalBodyScale.x, m_OriginalBodyScale.y, m_OriginalBodyScale.z);
         if (p_State == EnemyState.Attack)
         {
             if (distance > p_ChaseRange)
@@ -41,6 +45,9 @@ public class Chaser : Enemy
     }
     public override void OnSpawned()
     {
+        p_Collider = GetComponent<BoxCollider2D>();
+        p_Body = p_Animator.transform;
+        m_OriginalBodyScale = p_Body.localScale;
         p_Health = p_MaxHealth;
         p_HealthSlider.maxValue = p_MaxHealth;
         p_HealthSlider.value = p_Health;
@@ -67,7 +74,7 @@ public class Chaser : Enemy
         while(p_State == EnemyState.Attack)
         {
             p_Target.TakeDamage(p_Damage);
-
+            p_Animator.SetTrigger("Attack");
             yield return new WaitForSeconds(p_AttackFrequency);
         }
     }
@@ -75,6 +82,8 @@ public class Chaser : Enemy
     protected override void Die()
     {
         p_State = EnemyState.Die;
+        p_Rigidbody.linearVelocity = Vector2.zero;
+        p_Collider.enabled = false;
         base.Die();
     }
     void SwitchState(EnemyState state)
@@ -91,12 +100,16 @@ public class Chaser : Enemy
             case EnemyState.None:
                 break;
             case EnemyState.Chase:
+                p_Animator.SetBool("IsMoving", true);
                 Chase();
                 break;
             case EnemyState.Attack:
+                p_Animator.SetBool("IsMoving", false);
                 Attack();
                 break;
             case EnemyState.Die:
+                p_Animator.SetBool("IsMoving", false);
+                p_Animator.SetTrigger("Dead");
                 Die();
                 break;
         }
@@ -104,12 +117,15 @@ public class Chaser : Enemy
 
     public override void TakeDamage(float damage)
     {
+        if (!p_IsAlive) return;
+
         p_Health -= damage;
         p_HealthSlider.value = p_Health;
+        p_Animator.SetTrigger("Damage");
 
         if (p_Health <= 0)
         {
-            Die();
+            SwitchState(EnemyState.Die);
         }
     }
 }

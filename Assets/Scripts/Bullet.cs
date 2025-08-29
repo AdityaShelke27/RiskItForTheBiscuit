@@ -17,6 +17,7 @@ public class Bullet : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.CompareTag("Interactable")) return;
         if (collision.CompareTag(m_OwnerTag)) return;
 
         if(collision.TryGetComponent(out Character character))

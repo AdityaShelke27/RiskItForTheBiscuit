@@ -1,0 +1,379 @@
+fileFormatVersion: 2
+guid: af5e26158731a73479b759ef22e70e31
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 5046207857302510441
+    second: New Portal Spritesheet_0
+  - first:
+      213: 7941805722669210009
+    second: New Portal Spritesheet_1
+  - first:
+      213: -6966790656402892800
+    second: New Portal Spritesheet_2
+  - first:
+      213: 3701550160294751222
+    second: New Portal Spritesheet_3
+  - first:
+      213: 8651151616435162957
+    second: New Portal Spritesheet_4
+  - first:
+      213: 8531989819873680956
+    second: New Portal Spritesheet_5
+  - first:
+      213: 7574068732589884119
+    second: New Portal Spritesheet_6
+  - first:
+      213: 2407852209815597248
+    second: New Portal Spritesheet_7
+  - first:
+      213: -8483448205232561913
+    second: New Portal Spritesheet_8
+  - first:
+      213: 8187392513649497142
+    second: New Portal Spritesheet_9
+  - first:
+      213: 2122786969227886690
+    second: New Portal Spritesheet_10
+  - first:
+      213: 8121383076463524273
+    second: New Portal Spritesheet_11
+  - first:
+      213: -5822811523852374826
+    second: New Portal Spritesheet_12
+  - first:
+      213: -7743812908045779146
+    second: New Portal Spritesheet_13
+  - first:
+      213: 7461426166537517360
+    second: New Portal Spritesheet_14
+  - first:
+      213: 4172796082338770927
+    second: New Portal Spritesheet_15
+  - first:
+      213: 6522333391547947366
+    second: New Portal Spritesheet_16
+  - first:
+      213: 5380504283848572010
+    second: New Portal Spritesheet_17
+  - first:
+      213: 577373481920052098
+    second: New Portal Spritesheet_18
+  - first:
+      213: 2262542716895231875
+    second: New Portal Spritesheet_19
+  - first:
+      213: -2251274209910929631
+    second: New Portal Spritesheet_20
+  - first:
+      213: 7775129774193391705
+    second: New Portal Spritesheet_21
+  - first:
+      213: 1110944221729225663
+    second: New Portal Spritesheet_22
+  - first:
+      213: -1444942184338202004
+    second: New Portal Spritesheet_23
+  - first:
+      213: -7911459302955907794
+    second: New Portal Spritesheet_24
+  - first:
+      213: -1935009887473589111
+    second: New Portal Spritesheet_25
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: New Portal Spritesheet_0
+      rect:
+        serializedVersion: 2
+        x: 553
+        y: 484
+        width: 381
+        height: 352
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 96b1d4d6f4bb70640800000000000000
+      internalID: 5046207857302510441
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: New Portal Spritesheet_1
+      rect:
+        serializedVersion: 2
+        x: 116
+        y: 485
+        width: 356
+        height: 347
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 999dcde2a36f63e60800000000000000
+      internalID: 7941805722669210009
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: New Portal Spritesheet_2
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 86
+        width: 386
+        height: 364
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00858944fccf05f90800000000000000
+      internalID: -6966790656402892800
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: New Portal Spritesheet_22
+      rect:
+        serializedVersion: 2
+        x: 556
+        y: 119
+        width: 384
+        height: 320
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fbb717532edda6f00800000000000000
+      internalID: 1110944221729225663
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: New Portal Spritesheet_24
+      rect:
+        serializedVersion: 2
+        x: 1074
+        y: 496
+        width: 367
+        height: 311
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e258a504ea9d43290800000000000000
+      internalID: -7911459302955907794
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: New Portal Spritesheet_25
+      rect:
+        serializedVersion: 2
+        x: 1078
+        y: 119
+        width: 379
+        height: 319
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 984a44c62c67525e0800000000000000
+      internalID: -1935009887473589111
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 4a00c8575b33c374e8e98c3dc43a268d
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      New Portal Spritesheet_0: 5046207857302510441
+      New Portal Spritesheet_1: 7941805722669210009
+      New Portal Spritesheet_10: 2122786969227886690
+      New Portal Spritesheet_11: 8121383076463524273
+      New Portal Spritesheet_12: -5822811523852374826
+      New Portal Spritesheet_13: -7743812908045779146
+      New Portal Spritesheet_14: 7461426166537517360
+      New Portal Spritesheet_15: 4172796082338770927
+      New Portal Spritesheet_16: 6522333391547947366
+      New Portal Spritesheet_17: 5380504283848572010
+      New Portal Spritesheet_18: 577373481920052098
+      New Portal Spritesheet_19: 2262542716895231875
+      New Portal Spritesheet_2: -6966790656402892800
+      New Portal Spritesheet_20: -2251274209910929631
+      New Portal Spritesheet_21: 7775129774193391705
+      New Portal Spritesheet_22: 1110944221729225663
+      New Portal Spritesheet_23: -1444942184338202004
+      New Portal Spritesheet_24: -7911459302955907794
+      New Portal Spritesheet_25: -1935009887473589111
+      New Portal Spritesheet_3: 3701550160294751222
+      New Portal Spritesheet_4: 8651151616435162957
+      New Portal Spritesheet_5: 8531989819873680956
+      New Portal Spritesheet_6: 7574068732589884119
+      New Portal Spritesheet_7: 2407852209815597248
+      New Portal Spritesheet_8: -8483448205232561913
+      New Portal Spritesheet_9: 8187392513649497142
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

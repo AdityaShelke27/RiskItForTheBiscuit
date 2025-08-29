@@ -9,6 +9,8 @@ public abstract class Enemy : Character
     [SerializeField] protected float p_Damage;
     [SerializeField] protected float p_AttackFrequency;
     [SerializeField] protected Slider p_HealthSlider;
+    [SerializeField] protected Animator p_Animator;
+    protected Transform p_Body;
     protected Character p_Target;
     protected EnemyState p_State;
     protected delegate void StateUpdate(float deltaTime);

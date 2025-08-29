@@ -99,6 +99,7 @@ public class Player : Character
 
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         m_GunPivot.localRotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        m_GunPivot.localScale = new Vector3(m_GunPivot.localScale.x, Mathf.Cos(angle * Mathf.Deg2Rad) < 0 ? -1 : 1, m_GunPivot.localScale.z);
     }
     void Shoot(InputAction.CallbackContext context)
     {

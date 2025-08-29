@@ -39,6 +39,11 @@ public class Echo : Character
             Die();
         }
     }
+    protected override void Die()
+    {
+        base.Die();
+        Destroy(gameObject);
+    }
 
     public void OnSpawned(List<RecordFrame> recordedEcho, float maxHealth, float speed)
     {
