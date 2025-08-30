@@ -8,22 +8,20 @@ public class Shooter : Enemy
     [SerializeField] Transform m_GunPivot;
     Vector3 m_OriginalBodyScale;
     Coroutine m_AttackCoroutine;
-    private void Awake()
-    {
-        p_Rigidbody = GetComponent<Rigidbody2D>();
-    }
+    bool isFlipped = false;
     void Update()
     {
         if (!p_IsAlive) return;
 
-        if (p_Target == null)
+        if (p_Target == null || !p_Target.GetIsAlive())
         {
             FindNewTarget();
             if (p_Target == null) return;
         }
 
         float distance = Vector2.Distance(transform.position, p_Target.transform.position);
-        p_Body.localScale = new(transform.position.x < p_Target.transform.position.x ? -m_OriginalBodyScale.x : m_OriginalBodyScale.x, m_OriginalBodyScale.y, m_OriginalBodyScale.z);
+        isFlipped = transform.position.x < p_Target.transform.position.x ? true : false;
+        p_Body.localScale = new(isFlipped ? -m_OriginalBodyScale.x : m_OriginalBodyScale.x, m_OriginalBodyScale.y, m_OriginalBodyScale.z);
         if (p_State == EnemyState.Attack)
         {
             if (distance > p_ChaseRange)
@@ -47,7 +45,6 @@ public class Shooter : Enemy
     }
     public override void OnSpawned()
     {
-        p_Collider = GetComponent<BoxCollider2D>();
         p_Body = p_Animator.transform;
         m_OriginalBodyScale = p_Body.localScale;
         p_Health = p_MaxHealth;
@@ -69,6 +66,7 @@ public class Shooter : Enemy
         p_Health -= damage;
         p_HealthSlider.value = p_Health;
         p_Animator.SetTrigger("Damage");
+        AudioManager.Instance.PlayHurt(p_AudioSource);
         if (p_Health <= 0)
         {
             SwitchState(EnemyState.Die);
@@ -92,19 +90,25 @@ public class Shooter : Enemy
     }
     void Shoot()
     {
-	    Vector3 dir = p_Target.transform.position - transform.position;
+	    Vector3 dir = p_Target.GetColliderCenter() - transform.position;
 
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        m_GunPivot.localRotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        m_FirePoint.rotation = Quaternion.AngleAxis(angle/* * (isFlipped ? -1 : 1)*/, Vector3.forward);
 
         GameObject bullet = Instantiate(m_BulletPrefab, m_FirePoint.position, m_FirePoint.rotation);
         bullet.GetComponent<Bullet>().FireBullet(gameObject.tag);
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(m_FirePoint.position, 0.1f);
     }
     protected override void Die()
     {
         p_State = EnemyState.Die;
         p_Rigidbody.linearVelocity = Vector2.zero;
         p_Collider.enabled = false;
+        AudioManager.Instance.PlayDeath(p_AudioSource);
         base.Die();
     }
 
@@ -135,5 +139,14 @@ public class Shooter : Enemy
                 Die();
                 break;
         }
+    }
+    public override void Heal(float amount)
+    {
+        p_Health += amount;
+        if (p_Health > p_MaxHealth)
+        {
+            p_Health = p_MaxHealth;
+        }
+        p_HealthSlider.value = p_Health;
     }
 }

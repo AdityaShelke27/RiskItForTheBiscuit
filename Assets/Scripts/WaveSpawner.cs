@@ -23,7 +23,7 @@ public class WaveSpawner : MonoBehaviour
     {
         yield return new WaitForSeconds(2);
 
-        for (int i = 0; i < m_Waves.Length; i++)
+        for (int i = 0; i < 1/*m_Waves.Length*/; i++)
         {
             Wave wave = m_Waves[i];
             int enemyCount = wave.enemies.Length;

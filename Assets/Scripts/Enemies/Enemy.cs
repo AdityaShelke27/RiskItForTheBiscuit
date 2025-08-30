@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public abstract class Enemy : Character
 {
@@ -9,7 +10,7 @@ public abstract class Enemy : Character
     [SerializeField] protected float p_Damage;
     [SerializeField] protected float p_AttackFrequency;
     [SerializeField] protected Slider p_HealthSlider;
-    [SerializeField] protected Animator p_Animator;
+    [SerializeField] protected GameObject p_Collectible;
     protected Transform p_Body;
     protected Character p_Target;
     protected EnemyState p_State;
@@ -30,6 +31,13 @@ public abstract class Enemy : Character
     protected override void Die()
     {
         base.Die();
+
+        if(Random.Range(0, 5) == 0) Instantiate(p_Collectible, transform.position, Quaternion.identity);
+        Invoke(nameof(DestroyEnemy), 2);
+    }
+    void DestroyEnemy()
+    {
+        Destroy(gameObject);
     }
 
     protected virtual void ChaseUpdate(float deltaTime)

@@ -49,5 +49,6 @@ public class ExtractionArea : MonoBehaviour
         m_IsMachineActive = true;
         m_IsInteractable = false;
         UIManager.Instance.MachineActiveFlash();
+        AudioManager.Instance.PlayActivateMachine();
     }
 }

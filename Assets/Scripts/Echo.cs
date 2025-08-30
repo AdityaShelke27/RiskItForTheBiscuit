@@ -14,11 +14,6 @@ public class Echo : Character
     bool m_IsActive;
     int m_FramePoint = 0;
 
-    private void Awake()
-    {
-        p_Rigidbody = GetComponent<Rigidbody2D>();
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -72,5 +67,14 @@ public class Echo : Character
     {
         GameObject bullet = Instantiate(m_BulletPrefab, m_FirePoint.position, m_FirePoint.rotation);
         bullet.GetComponent<Bullet>().FireBullet(gameObject.tag);
+    }
+    public override void Heal(float amount)
+    {
+        p_Health += amount;
+        if (p_Health > p_MaxHealth)
+        {
+            p_Health = p_MaxHealth;
+        }
+        m_HealthSlider.value = p_Health;
     }
 }

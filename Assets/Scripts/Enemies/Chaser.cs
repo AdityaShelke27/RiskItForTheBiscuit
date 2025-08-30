@@ -5,10 +5,6 @@ public class Chaser : Enemy
 {
     Coroutine m_AttackCoroutine;
     Vector3 m_OriginalBodyScale;
-    private void Awake()
-    {
-        p_Rigidbody = GetComponent<Rigidbody2D>();
-    }
 
     void Update()
     {
@@ -45,7 +41,6 @@ public class Chaser : Enemy
     }
     public override void OnSpawned()
     {
-        p_Collider = GetComponent<BoxCollider2D>();
         p_Body = p_Animator.transform;
         m_OriginalBodyScale = p_Body.localScale;
         p_Health = p_MaxHealth;
@@ -84,6 +79,7 @@ public class Chaser : Enemy
         p_State = EnemyState.Die;
         p_Rigidbody.linearVelocity = Vector2.zero;
         p_Collider.enabled = false;
+        AudioManager.Instance.PlayDeath(p_AudioSource);
         base.Die();
     }
     void SwitchState(EnemyState state)
@@ -122,10 +118,20 @@ public class Chaser : Enemy
         p_Health -= damage;
         p_HealthSlider.value = p_Health;
         p_Animator.SetTrigger("Damage");
+        AudioManager.Instance.PlayHurt(p_AudioSource);
 
         if (p_Health <= 0)
         {
             SwitchState(EnemyState.Die);
         }
+    }
+    public override void Heal(float amount)
+    {
+        p_Health += amount;
+        if (p_Health > p_MaxHealth)
+        {
+            p_Health = p_MaxHealth;
+        }
+        p_HealthSlider.value = p_Health;
     }
 }

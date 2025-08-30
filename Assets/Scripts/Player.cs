@@ -25,9 +25,10 @@ public class Player : Character
     [SerializeField] float m_FirstEchoRecordTime;
     bool isRight = true;
 
-    private void Awake()
+    protected override void Awake()
     {
-        p_Rigidbody = GetComponent<Rigidbody2D>();
+        base.Awake();
+
         m_InputActions = new InputSystem_Actions();
         m_InputActions.Player.Enable();
 
@@ -44,7 +45,9 @@ public class Player : Character
 
     void Update()
     {
-        Move(m_InputActions.Player.Move.ReadValue<Vector2>());
+        Vector2 val = m_InputActions.Player.Move.ReadValue<Vector2>();
+        p_Animator.SetBool("IsMoving", val != Vector2.zero);
+        Move(val);
         PlayerFlipCorrection();
         PointArmToMouse();
         if (m_IsRecording)
@@ -105,6 +108,8 @@ public class Player : Character
     {
         GameObject bullet = Instantiate(m_BulletPrefab, m_FirePoint.position, m_FirePoint.rotation);
         bullet.GetComponent<Bullet>().FireBullet(gameObject.tag);
+
+        AudioManager.Instance.PlayShoot();
     }
     void Record(InputAction.CallbackContext context)
     {
@@ -119,6 +124,7 @@ public class Player : Character
         }
 
         Debug.Log("Recording Started");
+        AudioManager.Instance.PlayRecording();
         m_IsRecording = true;
         m_RecordedEcho.Clear();
         StartCoroutine(SetRecordingFalse());
@@ -128,6 +134,7 @@ public class Player : Character
         yield return new WaitForSeconds(m_FirstEchoRecordTime);
         Debug.Log("Recording Complete");
         m_IsRecording = false;
+        AudioManager.Instance.StopRecording();
 
         DeployEcho();
         m_EchosDeployed++;
@@ -140,5 +147,15 @@ public class Player : Character
         {
             Die();
         }
+    }
+
+    public override void Heal(float amount)
+    {
+        p_Health += amount;
+        if(p_Health > p_MaxHealth)
+        {
+            p_Health = p_MaxHealth;
+        }
+        m_HealthSlider.value = p_Health;
     }
 }
